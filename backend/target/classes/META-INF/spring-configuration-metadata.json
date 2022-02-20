@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "env",
+      "type": "main.demo.configuration.property.MyPasswordProperties",
+      "sourceType": "main.demo.configuration.property.MyPasswordProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "env.secret-key",
+      "type": "java.lang.String",
+      "sourceType": "main.demo.configuration.property.MyPasswordProperties"
+    }
+  ],
+  "hints": []
+}
