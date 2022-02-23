@@ -12,5 +12,5 @@ public interface Service_Login {
 
     public ObjectMessage<Response_User.User> addUser(Param_User.Add parameter);
 
-    public ObjectMessage<Response_User.User> checkUser(String id, String pwd);
+    public ObjectMessage<Boolean> checkUser(String id, String pwd);
 }

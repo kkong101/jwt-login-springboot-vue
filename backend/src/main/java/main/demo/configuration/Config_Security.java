@@ -1,5 +1,9 @@
 package main.demo.configuration;
 
+import main.demo.configuration.provider.JWTAuthenticationEntryPoint;
+import main.demo.configuration.provider.JWTAuthenticationFilter;
+import main.demo.mvc.repository.Repository_User;
+import main.demo.utilization.JwtToken;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,11 +13,20 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
 @EnableWebSecurity // 웹 보안 활성화를 위한 annotation => SpringSecurityFilterChain에 등록됨.
 public class Config_Security extends WebSecurityConfigurerAdapter {
+
+    private final JwtToken jwtUtils;
+    private final Repository_User userRepository;
+
+    public Config_Security(JwtToken jwtUtils, Repository_User userRepository) {
+        this.jwtUtils = jwtUtils;
+        this.userRepository = userRepository;
+    }
 
     // HttpSecurity
     // A HttpSecurity is similar to Spring Security's XML <http> element in the namespace configuration.
@@ -28,6 +41,11 @@ public class Config_Security extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .formLogin().disable();
+        http.authorizeRequests().anyRequest().authenticated()
+                .and()
+                .addFilterBefore(new JWTAuthenticationFilter(jwtUtils,userRepository), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling()
+                .authenticationEntryPoint(new JWTAuthenticationEntryPoint());
     }
 
     // WebSecurity

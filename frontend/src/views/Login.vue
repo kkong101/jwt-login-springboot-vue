@@ -13,32 +13,49 @@
     >
     <q-btn to="/signup" class="q-mt-md" color="primary">회원가입</q-btn>
   </div>
+  <DialogPopUp :title="modalTxt" :isPopupOpen="isModalOpen" reDirect="/" />
 </template>
-<script setup>
-  import { onMounted, ref, getCurrentInstance } from "vue";
-  const instance = getCurrentInstance();
-  const axios = instance.appContext.config.globalProperties.$axios;
+<script>
+  import DialogPopUp from "../components/popup/DialogPopUp.vue";
+  import { ref, defineComponent } from "vue";
 
-  const userId = ref("");
-  const userPwd = ref("");
+  export default defineComponent({
+    name: "Login",
+    components: {
+      DialogPopUp,
+    },
+    data() {
+      return {
+        userId: ref(""),
+        userPwd: ref(""),
+        modalTxt: ref(""),
+        isModalOpen: ref(false),
+      };
+    },
+    setup() {},
+    methods: {
+      async postLogin() {
+        const config = {
+          headers: {
+            test: "hello",
+          },
+        };
+        const url = "/api/login/checkUser";
+        const data = {
+          user_id: this.userId,
+          user_pwd: this.userPwd,
+        };
+        const res = await this.$axios.post(url, data, config);
+        if (res.data) {
+          this.modalTxt = "로그인 성공!";
+          this.isModalOpen = true;
+        }
 
-  const postLogin = async () => {
-    const config = {
-      headers: {
-        test: "hello",
+        this.userId = "";
+        this.userPwd = "";
       },
-    };
-    const url = "/api/login/checkUser";
-    const data = {
-      user_id: userId.value,
-      user_pwd: userPwd.value,
-    };
-    const res = await axios.post(url, data, config);
-    console.log(res);
-
-    userId.value = "";
-    userPwd.value = "";
-  };
+    },
+  });
 </script>
 <style scoped>
   .container {

@@ -29,7 +29,7 @@
       >회원가입</q-btn
     >
     <DialogPopUp
-      title="회원가입 성공!"
+      :title="modalTxt"
       :isPopupOpen="isModalOpen"
       reDirect="/login"
     />
@@ -43,11 +43,15 @@
 
   export default defineComponent({
     name: "SignUp",
+    components: {
+      DialogPopUp,
+    },
     data() {
       return {
         userId: ref(""),
         userPwd: ref(""),
         idLabel: ref("아이디"),
+        modalTxt: ref(""),
         isModalOpen: ref(false),
         isDuplicate: ref(false),
       };
@@ -84,7 +88,10 @@
         }
       },
       async postSignUp() {
-        if (isDuplicate) {
+        if (this.isDuplicate || this.userId == "") {
+          this.modalTxt = "중복된 아이디 입니다.";
+          this.isModalOpen = true;
+          return;
         }
 
         const config = {
@@ -99,8 +106,9 @@
         };
         const res = await this.$axios.post(url, data, config);
         console.log(res);
-        if (res.data.data?.code == 200) {
-          isModalOpen.value = true;
+        if (res.data?.code == 200) {
+          this.modalTxt = "회원가입 성공!";
+          this.isModalOpen = true;
         }
       },
     },

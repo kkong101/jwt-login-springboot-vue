@@ -21,7 +21,15 @@ public class Password {
         this.password = encrypt(password,random);
     }
 
+    public Password(String password,String salt) {
+        this.salt = salt;
+        this.password = password;
+    }
+
     public boolean isMatched(String input) {
+        System.out.println(input);
+        System.out.println(salt);
+        System.out.println(password);
         return password.equals(encrypt(input, salt));
     }
 

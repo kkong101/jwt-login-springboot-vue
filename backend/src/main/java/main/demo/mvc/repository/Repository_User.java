@@ -21,7 +21,7 @@ public class Repository_User extends BaseRepository {
         return Response_User.User.builder()
                 .idx(user.getIdx())
                 .id(user.getAccount_id())
-                .pwd(user.getPassword().getPassword())
+                .password(user.getPassword())
                 .refreshToken(user.getRefresh_token())
                 .created(user.getCreated_at())
                 .updated(user.getUpdate_at())
@@ -39,11 +39,15 @@ public class Repository_User extends BaseRepository {
         return Response_User.User.builder()
                 .idx(user.getIdx())
                 .id(user.getAccount_id())
-                .pwd(user.getPassword().getPassword())
+                .password(user.getPassword())
                 .refreshToken(user.getRefresh_token())
                 .created(user.getCreated_at())
                 .updated(user.getUpdate_at())
                 .build();
+    }
+
+    public void updateToken(String id, String refreshToken, String accessToken) {
+
     }
 
 }

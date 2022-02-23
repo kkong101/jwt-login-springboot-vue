@@ -1,5 +1,7 @@
 package main.demo.mvc.service.impl;
 
+import main.demo.domain.basement.embed.Password;
+import main.demo.domain.basement.type.TokenType;
 import main.demo.domain.dto.request.Param_User;
 import main.demo.domain.dto.response.Response_User;
 
@@ -8,35 +10,43 @@ import main.demo.domain.entity.user.B_User;
 import main.demo.mvc.repository.Repository_User;
 import main.demo.mvc.service.Service_Login;
 import main.demo.mvc.service.basement.BaseService;
+import main.demo.utilization.JwtToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 public class Service_Impl_Login extends BaseService<Repository_User> implements Service_Login {
 
     private final Repository_User loginRepository;
+    private final JwtToken jwtUtils;
 
-    public Service_Impl_Login(Repository_User loginRepository, EntityManager em) {
+    public Service_Impl_Login(Repository_User loginRepository,JwtToken jwtUtils, EntityManager em) {
         super(loginRepository, em);
         this.loginRepository = loginRepository;
+        this.jwtUtils = jwtUtils;
     }
 
     @Override
-    public ObjectMessage<Response_User.User> getUser(String uuid) {
+    public ObjectMessage<Response_User.User> getUser(String accountId) {
         return ObjectMessage.<Response_User.User>builder()
                 .status(HttpStatus.OK)
-                .data(repository.getUser(uuid))
+                .data(repository.getUser(accountId))
                 .build();
     }
 
     @Override
-    public ObjectMessage<Response_User.User> checkUser(String id, String pwd) {
-        return ObjectMessage.<Response_User.User>builder()
+    public ObjectMessage<Boolean> checkUser(String id, String pwd) {
+        Response_User.User entity = repository.getUser(id);
+        Password password = new Password(entity.getPassword().getPassword(), entity.getPassword().getSalt());
+
+        return ObjectMessage.<Boolean>builder()
                 .status(HttpStatus.OK)
-                .data(repository.checkUser(id,pwd))
+                .data(password.isMatched(pwd))
                 .build();
     }
 
@@ -46,6 +56,8 @@ public class Service_Impl_Login extends BaseService<Repository_User> implements 
         B_User user = B_User.builder()
                 .password(param.getUser_pwd())
                 .account_id(param.getUser_id())
+                .access_token(jwtUtils.generateToken(param.getUser_id(), param.getUser_id(), TokenType.ACCESS_TOKEN))
+                .refresh_token(jwtUtils.generateToken(param.getUser_id(), param.getUser_id(), TokenType.REFRESH_TOKEN))
                 .build();
 
         em.persist(user);
