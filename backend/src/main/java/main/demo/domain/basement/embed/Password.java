@@ -27,9 +27,6 @@ public class Password {
     }
 
     public boolean isMatched(String input) {
-        System.out.println(input);
-        System.out.println(salt);
-        System.out.println(password);
         return password.equals(encrypt(input, salt));
     }
 

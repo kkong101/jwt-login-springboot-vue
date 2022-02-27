@@ -2,6 +2,7 @@ package main.demo.domain.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import main.demo.domain.basement.embed.Password;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ public class Response_User {
         private Long idx;
         private String id;
         private Password password;
+        @Setter
         private String accessToken;
         private String refreshToken;
         private LocalDateTime created;

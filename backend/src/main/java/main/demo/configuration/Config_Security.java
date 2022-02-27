@@ -35,14 +35,16 @@ public class Config_Security extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeHttpRequests()
-                .anyRequest().permitAll()
+        http.csrf().disable().formLogin().disable()
+                .authorizeHttpRequests()
+                .antMatchers("/").permitAll()
+                .antMatchers("/login/**").permitAll()
+                .antMatchers("/auth/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .formLogin().disable();
-        http.authorizeRequests().anyRequest().authenticated()
-                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http
                 .addFilterBefore(new JWTAuthenticationFilter(jwtUtils,userRepository), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(new JWTAuthenticationEntryPoint());
@@ -53,7 +55,7 @@ public class Config_Security extends WebSecurityConfigurerAdapter {
     // overriding WebSecurityConfigurerAdapter or exposing a WebSecurityCustomizer bean.
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+        web.ignoring().antMatchers("/login/**", "/auth/**");
     }
 
     @Bean

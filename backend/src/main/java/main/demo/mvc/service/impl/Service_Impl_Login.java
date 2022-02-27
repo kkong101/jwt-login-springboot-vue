@@ -33,6 +33,7 @@ public class Service_Impl_Login extends BaseService<Repository_User> implements 
 
     @Override
     public ObjectMessage<Response_User.User> getUser(String accountId) {
+
         return ObjectMessage.<Response_User.User>builder()
                 .status(HttpStatus.OK)
                 .data(repository.getUser(accountId))
@@ -40,13 +41,25 @@ public class Service_Impl_Login extends BaseService<Repository_User> implements 
     }
 
     @Override
-    public ObjectMessage<Boolean> checkUser(String id, String pwd) {
-        Response_User.User entity = repository.getUser(id);
-        Password password = new Password(entity.getPassword().getPassword(), entity.getPassword().getSalt());
+    public ObjectMessage<Response_User.User> checkUser(String id, String pwd) {
+        Response_User.User user = repository.getUser(id);
+        // 아이디 없음.
+        if(user == null) {
+            return null;
+        }
 
-        return ObjectMessage.<Boolean>builder()
+        if (!user.getPassword().isMatched(pwd)) {
+            return ObjectMessage.<Response_User.User>builder()
+                    .status(HttpStatus.OK)
+                    .data(null)
+                    .build();
+        }
+
+        user.setAccessToken(jwtUtils.generateToken(user.getId(), user.getId(), TokenType.ACCESS_TOKEN));
+
+        return ObjectMessage.<Response_User.User>builder()
                 .status(HttpStatus.OK)
-                .data(password.isMatched(pwd))
+                .data(user)
                 .build();
     }
 
@@ -59,12 +72,13 @@ public class Service_Impl_Login extends BaseService<Repository_User> implements 
                 .access_token(jwtUtils.generateToken(param.getUser_id(), param.getUser_id(), TokenType.ACCESS_TOKEN))
                 .refresh_token(jwtUtils.generateToken(param.getUser_id(), param.getUser_id(), TokenType.REFRESH_TOKEN))
                 .build();
-
         em.persist(user);
 
         return ObjectMessage.<Response_User.User>builder()
                 .status(HttpStatus.OK)
                 .data(Response_User.User.builder()
+                        .id(user.getAccount_id())
+                        .accessToken(user.getAccess_token())
                         .build()
                 )
                 .build();

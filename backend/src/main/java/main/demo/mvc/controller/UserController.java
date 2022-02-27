@@ -40,7 +40,7 @@ public class UserController extends BaseController<Service_Login> {
     }
 
     @RequestMapping(value="/checkUser", method = RequestMethod.POST)
-    public @ResponseBody ObjectMessage<Boolean> checkUser(@RequestBody Param_User.Add param) {
+    public @ResponseBody ObjectMessage<Response_User.User> checkUser(@RequestBody Param_User.Add param) {
         try {
             return service.checkUser(param.getUser_id(),param.getUser_pwd());
         } catch (Exception e) {

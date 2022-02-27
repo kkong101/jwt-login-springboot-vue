@@ -3,6 +3,7 @@
     <h3 class="title">Login Page</h3>
     <q-input v-model="userId" label="아이디" :dense="dense" />
     <q-input
+      @keyup.enter="postLogin()"
       v-model="userPwd"
       type="password"
       label="비밀번호"
@@ -17,7 +18,8 @@
 </template>
 <script>
   import DialogPopUp from "../components/popup/DialogPopUp.vue";
-  import { ref, defineComponent } from "vue";
+  import { ref, defineComponent, computed } from "vue";
+  import { useStore } from "vuex";
 
   export default defineComponent({
     name: "Login",
@@ -32,21 +34,32 @@
         isModalOpen: ref(false),
       };
     },
-    setup() {},
+    setup() {
+      const store = useStore();
+
+      const setLogin = (obj) => {
+        store.commit("setUserInfo", obj);
+      };
+      return { setLogin };
+    },
     methods: {
       async postLogin() {
-        const config = {
-          headers: {
-            test: "hello",
-          },
-        };
-        const url = "/api/login/checkUser";
         const data = {
           user_id: this.userId,
           user_pwd: this.userPwd,
         };
-        const res = await this.$axios.post(url, data, config);
+        const res = await this.$api.postLogin(data);
         if (res.data) {
+          // 쿠키에 access 토큰 등록
+
+          console.log(res.data);
+
+          this.setLogin({
+            id: res.data.data.id,
+            name: res.data.data.id,
+            token: res.data.data.accessToken,
+          });
+
           this.modalTxt = "로그인 성공!";
           this.isModalOpen = true;
         }

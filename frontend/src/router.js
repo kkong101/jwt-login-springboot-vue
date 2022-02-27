@@ -1,4 +1,5 @@
 import { createWebHashHistory, createRouter } from "vue-router";
+import { checkAuth } from "./middleware/checkAuth.js";
 
 const routes = [
   {
@@ -15,6 +16,18 @@ const routes = [
     path: "/signup",
     name: "signup",
     component: () => import("./views/SignUp.vue"),
+  },
+  {
+    path: "/mypage",
+    name: "mypage",
+    component: () => import("./views/MyInfo.vue"),
+    beforeEnter: checkAuth,
+  },
+  {
+    path: "/admin",
+    name: "admin",
+    component: () => import("./views/Admin.vue"),
+    beforeEnter: checkAuth,
   },
 ];
 

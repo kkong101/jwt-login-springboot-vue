@@ -67,17 +67,11 @@
           this.isDuplicate = false;
           return;
         }
-        const config = {
-          headers: {
-            test: "hello",
-          },
-        };
-        const url = "/api/login/getUser";
         const data = {
           user_id: this.userId,
           user_pwd: this.userPwd,
         };
-        const res = await this.$axios.post(url, data, config);
+        const res = await this.$api.postIdcheck(data);
         console.log(res);
         if (res.data.data != null) {
           this.idLabel = "아이디 - 사용불가능한 아이디입니다.";
@@ -93,19 +87,11 @@
           this.isModalOpen = true;
           return;
         }
-
-        const config = {
-          headers: {
-            test: "hello",
-          },
-        };
-        const url = "/api/login/addUser";
         const data = {
           user_id: this.userId,
           user_pwd: this.userPwd,
         };
-        const res = await this.$axios.post(url, data, config);
-        console.log(res);
+        const res = await this.$api.postSignUp(data);
         if (res.data?.code == 200) {
           this.modalTxt = "회원가입 성공!";
           this.isModalOpen = true;
