@@ -2,7 +2,9 @@
   <div class="container column justify-center">
     <h3>Index Page</h3>
     <q-btn color="primary" to="/login">로그인 페이지 이동</q-btn>
-    <q-btn class="q-mt-md" color="primary" @click="logout()">로그 아웃</q-btn>
+    <q-btn class="q-mt-md" color="primary" @click="clickLogout()"
+      >로그 아웃</q-btn
+    >
     <q-btn class="q-mt-md" color="primary" to="/admin">관리자 페이지</q-btn>
     <q-btn class="q-mt-md" color="primary" to="/mypage">마이 페이지</q-btn>
     <h6 class="q-my-lg" :style="isJwt ? 'color: red' : ''">
@@ -35,11 +37,16 @@
     },
     setup() {
       const store = useStore();
-      const userId = store.getters.getUserId;
-      const userName = store.getters.getUserName;
-      const isJwt = store.getters.getIsJwt;
+      const userId = ref(store.getters.getUserId);
+      const userName = ref(store.getters.getUserName);
+      const isJwt = ref(store.getters.getIsJwt);
 
-      const logout = () => store.commit("setLogout");
+      const logout = () => {
+        store.commit("setLogout");
+        userId.value = "";
+        userName.value = "";
+        isJwt.value = false;
+      };
 
       const token = Cookies.get("AccessToken");
 
@@ -48,7 +55,8 @@
       return { userId, userName, isJwt, token, logout, expiredDate };
     },
     methods: {
-      logout() {
+      clickLogout() {
+        window.alert("로그아웃 되었습니다.");
         this.logout();
       },
     },

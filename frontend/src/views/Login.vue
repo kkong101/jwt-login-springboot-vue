@@ -18,7 +18,7 @@
 </template>
 <script>
   import DialogPopUp from "../components/popup/DialogPopUp.vue";
-  import { ref, defineComponent, computed } from "vue";
+  import { ref, defineComponent } from "vue";
   import { useStore } from "vuex";
 
   export default defineComponent({
@@ -41,6 +41,13 @@
         store.commit("setUserInfo", obj);
       };
       return { setLogin };
+    },
+    beforeCreate() {
+      const cookie = this.$cookie.get("AccessToken");
+      if (cookie != null) {
+        window.alert("이미 로그인 상태입니다.");
+        this.$router.replace("/");
+      }
     },
     methods: {
       async postLogin() {

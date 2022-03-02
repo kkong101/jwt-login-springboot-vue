@@ -33,20 +33,37 @@ public class Service_Impl_Login extends BaseService<Repository_User> implements 
 
     @Override
     public ObjectMessage<Response_User.User> getUser(String accountId) {
+        Optional<Response_User.User> result = repository.getUser(accountId);
+
+        // null 처리
+        if(result.isEmpty()) {
+            return ObjectMessage.<Response_User.User>builder()
+                    .status(HttpStatus.OK)
+                    .data(null)
+                    .build();
+        }
+
+        Response_User.User user = result.get();
 
         return ObjectMessage.<Response_User.User>builder()
                 .status(HttpStatus.OK)
-                .data(repository.getUser(accountId))
+                .data(user)
                 .build();
     }
 
     @Override
     public ObjectMessage<Response_User.User> checkUser(String id, String pwd) {
-        Response_User.User user = repository.getUser(id);
-        // 아이디 없음.
-        if(user == null) {
-            return null;
+        Optional<Response_User.User> result = repository.getUser(id);
+
+        // null 처리
+        if(result.isEmpty()) {
+            return ObjectMessage.<Response_User.User>builder()
+                    .status(HttpStatus.OK)
+                    .data(null)
+                    .build();
         }
+
+        Response_User.User user = result.get();
 
         if (!user.getPassword().isMatched(pwd)) {
             return ObjectMessage.<Response_User.User>builder()
@@ -54,6 +71,7 @@ public class Service_Impl_Login extends BaseService<Repository_User> implements 
                     .data(null)
                     .build();
         }
+
 
         user.setAccessToken(jwtUtils.generateToken(user.getId(), user.getId(), TokenType.ACCESS_TOKEN));
 

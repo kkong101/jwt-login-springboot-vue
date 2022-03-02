@@ -1,5 +1,6 @@
 package main.demo.mvc.repository;
 
+import com.querydsl.jpa.impl.JPAUpdateClause;
 import main.demo.configuration.exception.FaultParamException;
 import main.demo.domain.basement.embed.Password;
 import main.demo.domain.dto.request.Param_User;
@@ -10,40 +11,25 @@ import main.demo.mvc.repository.basement.BaseRepository;
 import main.demo.utilization.JwtToken;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public class Repository_User extends BaseRepository {
 
     QB_User q_user = QB_User.b_User;
 
-    public Response_User.User getUser(String uuid) {
-        B_User user = query.selectFrom(q_user).where(q_user.account_id.eq(uuid)).fetchOne();
-        if(user == null) {
-            return null;
-        }
-        return Response_User.User.builder()
-                .idx(user.getIdx())
-                .id(user.getAccount_id())
-                .password(user.getPassword())
-                .refreshToken(user.getRefresh_token())
-                .created(user.getCreated_at())
-                .updated(user.getUpdate_at())
-                .build();
+    public Optional<Response_User.User> getUser(String id) {
+        B_User queryResult = query.selectFrom(q_user).where(q_user.account_id.eq(id)).fetchOne();
+
+        return (queryResult != null) ? Optional.of(mapper.map(queryResult, Response_User.User.class)) : Optional.empty();
     }
 
-    public B_User checkUser(String id, Password pwd) {
+    public long updateRefreshToken(String id,String refreshToken) {
+        JPAUpdateClause update = query.update(q_user).where(q_user.account_id.eq(id));
 
-        B_User user = query.selectFrom(q_user)
-                .where(q_user.account_id.eq(id).and(q_user.password.eq(pwd)))
-                .fetchOne();
-            if(user == null) {
-                System.out.println("user 없음");
-                return null;
-            }
-        return user;
-    }
+        update.set(q_user.refresh_token,refreshToken);
 
-    public void updateToken(String id, String refreshToken, String accessToken) {
-
+        return update.execute();
     }
 
 }
@@ -58,3 +44,5 @@ public class Repository_User extends BaseRepository {
 //        `user_account_password` char(64) DEFAULT NULL COMMENT '이용자 계정 암호',
 //        PRIMARY KEY (`user_idx`)
 //        ) ENGINE=InnoDB CHARSET=utf8 COMMENT='테스트 유저 테이블';
+
+

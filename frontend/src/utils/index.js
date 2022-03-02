@@ -22,6 +22,7 @@ export const checkJwt = (token) => {
 };
 
 export const jwtParse = (token) => {
+  if (token == null) return "";
   const base64Payload = token.split(".")[1];
   const decodedToken = JSON.parse(window.atob(base64Payload));
   return decodedToken;
