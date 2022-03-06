@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class B_User extends BaseEntity {
 
     @Column(name = "user_account_id", nullable = false, columnDefinition = "VARCHAR(30)")
-    private String account_id;
+    private String id;
 
     @Embedded
     @AttributeOverrides({
@@ -26,16 +26,16 @@ public class B_User extends BaseEntity {
     private Password password;
 
     @Column(name = "user_account_token_push", columnDefinition = "LONGTEXT")
-    private String access_token;
+    private String accessToken;
 
     @Column(name = "user_account_token_refresh", columnDefinition = "LONGTEXT")
-    private String refresh_token;
+    private String refreshToken;
 
     @Builder
-    public B_User(String account_id, String password, String access_token, String refresh_token) {
-        this.account_id = account_id;
+    public B_User(String id, String password, String accessToken, String refreshToken) {
+        this.id = id;
         this.password = new Password(password);
-        this.access_token = access_token;
-        this.refresh_token = refresh_token;
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
     }
 }

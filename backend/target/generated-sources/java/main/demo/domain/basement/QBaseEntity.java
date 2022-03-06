@@ -19,13 +19,13 @@ public class QBaseEntity extends EntityPathBase<BaseEntity> {
 
     public static final QBaseEntity baseEntity = new QBaseEntity("baseEntity");
 
-    public final DateTimePath<java.time.LocalDateTime> created_at = createDateTime("created_at", java.time.LocalDateTime.class);
+    public final DateTimePath<java.time.LocalDateTime> created = createDateTime("created", java.time.LocalDateTime.class);
 
     public final StringPath encrypt = createString("encrypt");
 
     public final NumberPath<Long> idx = createNumber("idx", Long.class);
 
-    public final DateTimePath<java.time.LocalDateTime> update_at = createDateTime("update_at", java.time.LocalDateTime.class);
+    public final DateTimePath<java.time.LocalDateTime> updated = createDateTime("updated", java.time.LocalDateTime.class);
 
     public QBaseEntity(String variable) {
         super(BaseEntity.class, forVariable(variable));

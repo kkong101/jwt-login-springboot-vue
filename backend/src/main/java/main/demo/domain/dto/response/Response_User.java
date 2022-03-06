@@ -44,10 +44,19 @@ public class Response_User {
     }
 
 
-    public static class UserMap extends PropertyMap<B_User, User> {
+    public static class UserMap extends PropertyMap<B_User, Response_User.User> {
         @Override
         protected void configure() {
+//            map(source.getIdx(),destination.getIdx());
+//            map(source.getAccount_id(),destination.getId());
+//            map(source.getPassword(),destination.getPassword());
+//            map(source.getAccess_token(),destination.getAccessToken());
+//            map(source.getRefresh_token(),destination.getRefreshToken());
+//            map(source.getCreated_at(),destination.getCreated());
+//            map(source.getUpdate_at(),destination.getUpdated());
+//            map().setIdx(source.getIdx());
 //            map().setId(source.getAccount_id());
+//            map().setPassword(source.getPassword());
 //            map().setAccessToken(source.getAccess_token());
 //            map().setRefreshToken(source.getRefresh_token());
 //            map().setCreated(source.getCreated_at());

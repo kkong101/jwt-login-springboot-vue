@@ -20,9 +20,9 @@ public class BaseEntity {
 
     @Column(name = "update_time", updatable = false, nullable = false)
     @UpdateTimestamp
-    private LocalDateTime update_at;
+    private LocalDateTime updated;
 
     @Column(name = "create_time", updatable = false, nullable = false)
     @CreationTimestamp
-    private LocalDateTime created_at;
+    private LocalDateTime created;
 }

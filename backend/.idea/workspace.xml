@@ -107,7 +107,9 @@
       <workItem from="1646099148047" duration="2068000" />
       <workItem from="1646109723432" duration="4105000" />
       <workItem from="1646114963285" duration="7740000" />
-      <workItem from="1646228966749" duration="3957000" />
+      <workItem from="1646228966749" duration="4066000" />
+      <workItem from="1646470351788" duration="878000" />
+      <workItem from="1646526759559" duration="13664000" />
     </task>
     <servers />
   </component>
@@ -129,5 +131,15 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

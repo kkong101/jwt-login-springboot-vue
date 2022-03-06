@@ -22,9 +22,15 @@ export default {
       // 토큰이 만료 되었을때,
       if (e.request.status == 401) {
         console.log("access 토큰 재발급 요청 보내기 전.");
+
         const token_res = await this.postAccessToken({
           user_id: store.getters.getUserId,
         });
+
+        console.log(
+          "401번 받고 토큰 요청 받기 위해 요청 보낸 응답 ",
+          token_res
+        );
 
         if (token_res.data) {
           Cookies.set("AccessToken", token_res.data.data.token);

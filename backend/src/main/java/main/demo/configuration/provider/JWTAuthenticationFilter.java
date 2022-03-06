@@ -40,11 +40,14 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorization = request.getHeader("Authorization");
 
-        System.out.println(request.getServletPath());
-
         try {
-            String token22 = authorization.substring(7);
-            Claims claims22 = tokenUtils.parse(token22);
+            String token = authorization.substring(7);
+            Claims claims = tokenUtils.parse(token);
+
+            // 권한 부여 및 사용자 정보 저장
+            SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(claims.get("id"), null, null));
+
+            filterChain.doFilter(request,response);
         } catch (ExpiredJwtException e) {
             request.setAttribute("exception", ResponseType.TOKEN_TIME_OUT);
             filterChain.doFilter(request,response);
@@ -53,72 +56,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         }
 
-
-//        try  {
-//
-//            if (authorization != null && authorization.startsWith("Bearer ")) {
-//                // "Bearer " 부분 잘라냄.
-//
-//                String token = authorization.substring(7);
-//                Claims claims = tokenUtils.parse(token);
-//                String tokenType = (String) claims.get("type");
-//                String id = (String) claims.get("id");
-//                String name = (String) claims.get("name");
-//                Date exp = (Date) claims.get("exp");
-//                System.out.println("정상 접근");
-//
-//                // 엑세스 토큰 재발급
-//                if("/auth/token/access".equals((request.getServletPath()))) {
-//                    System.out.println(id);
-//                    Response_User.User user = userRepository.getUser(id);
-//                    System.out.println(user.getId());
-//                    System.out.println(tokenUtils.isExpired(exp));
-//                    if (user == null && tokenUtils.isExpired(exp)) throw new Exception();
-//                    request.setAttribute("access",tokenUtils.generateToken(user.getId(),user.getId(),TokenType.ACCESS_TOKEN));
-//
-//                } else if("access".equals(tokenType) && !tokenUtils.isExpired(exp) && !"/auth/token/refresh".equals(request.getServletPath())) {
-//                    request.setAttribute("userId", id);
-//                    request.setAttribute("name",name);
-//
-//                    SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(id,null,null));
-//
-//                    filterChain.doFilter(request,response);
-//
-//                } else if ("refresh".equals(tokenType) && "/auth/token/refresh".equals(request.getServletPath())) {
-//                    Response_User.User user = userRepository.getUser(id);
-//                    if (user == null) throw new Exception();
-//
-//                    // DB에 저장된 Refresh 토큰과 일치하다면 access 토큰 발급
-//                    if(token.equals(user.getRefreshToken())) {
-//                        String access = tokenUtils.generateToken(user.getId(),user.getId(), TokenType.ACCESS_TOKEN);
-//                        request.setAttribute("access",access);
-//
-//                        // refresh 토큰 만기 시 다시 발급.
-//                        if(tokenUtils.compareTo(claims.getExpiration())) {
-//                            String refresh = tokenUtils.generateToken(user.getId(),user.getId(),TokenType.ADDITION_REFRESH_TOKEN);
-//
-//                            userRepository.updateToken(user.getId(),refresh,access);
-//
-//                            request.setAttribute("refresh", refresh);
-//
-//                            SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user.getId(),null,null));
-//
-//                            filterChain.doFilter(request,response);
-//                        }
-//                    }
-//                }
-//
-//            }
-//        } catch (ExpiredJwtException e) {
-//            request.setAttribute("exception", ResponseType.TOKEN_TIME_OUT);
-//            filterChain.doFilter(request,response);
-//        } catch (UnsupportedJwtException | MalformedJwtException | SignatureException e) {
-//            request.setAttribute("exception", ResponseType.TOKEN_INVALID);
-//            filterChain.doFilter(request,response);
-//        } catch (Exception e) {
-//            request.setAttribute("exception", ResponseType.SEVER_ERROR);
-//            filterChain.doFilter(request, response);
-//        }
     }
 
     @Override
@@ -127,10 +64,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         Collection<String> excludeUrlPatterns = new LinkedHashSet<>();
         excludeUrlPatterns.add("/login/**");
         excludeUrlPatterns.add("/auth/**");
-//      excludeUrlPatterns.add("/logout/**");
-//      excludeUrlPatterns.add("/signup/**");
-//      excludeUrlPatterns.add("/resources/**");
-
 
         return excludeUrlPatterns.stream()
                 .anyMatch(pattern -> new AntPathMatcher().match(pattern, request.getServletPath()));

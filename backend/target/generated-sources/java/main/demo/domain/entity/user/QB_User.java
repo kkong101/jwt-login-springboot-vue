@@ -24,25 +24,25 @@ public class QB_User extends EntityPathBase<B_User> {
 
     public final main.demo.domain.basement.QBaseEntity _super = new main.demo.domain.basement.QBaseEntity(this);
 
-    public final StringPath access_token = createString("access_token");
-
-    public final StringPath account_id = createString("account_id");
+    public final StringPath accessToken = createString("accessToken");
 
     //inherited
-    public final DateTimePath<java.time.LocalDateTime> created_at = _super.created_at;
+    public final DateTimePath<java.time.LocalDateTime> created = _super.created;
 
     //inherited
     public final StringPath encrypt = _super.encrypt;
+
+    public final StringPath id = createString("id");
 
     //inherited
     public final NumberPath<Long> idx = _super.idx;
 
     public final main.demo.domain.basement.embed.QPassword password;
 
-    public final StringPath refresh_token = createString("refresh_token");
+    public final StringPath refreshToken = createString("refreshToken");
 
     //inherited
-    public final DateTimePath<java.time.LocalDateTime> update_at = _super.update_at;
+    public final DateTimePath<java.time.LocalDateTime> updated = _super.updated;
 
     public QB_User(String variable) {
         this(B_User.class, forVariable(variable), INITS);

@@ -72,7 +72,6 @@ public class Service_Impl_Login extends BaseService<Repository_User> implements 
                     .build();
         }
 
-
         user.setAccessToken(jwtUtils.generateToken(user.getId(), user.getId(), TokenType.ACCESS_TOKEN));
 
         return ObjectMessage.<Response_User.User>builder()
@@ -84,19 +83,20 @@ public class Service_Impl_Login extends BaseService<Repository_User> implements 
     @Override
     @Transactional
     public ObjectMessage<Response_User.User> addUser(Param_User.Add param) {
+        String userId = param.getUser_id();
         B_User user = B_User.builder()
                 .password(param.getUser_pwd())
-                .account_id(param.getUser_id())
-                .access_token(jwtUtils.generateToken(param.getUser_id(), param.getUser_id(), TokenType.ACCESS_TOKEN))
-                .refresh_token(jwtUtils.generateToken(param.getUser_id(), param.getUser_id(), TokenType.REFRESH_TOKEN))
+                .id(param.getUser_id())
+                .accessToken(jwtUtils.generateToken(userId, userId, TokenType.ACCESS_TOKEN))
+                .refreshToken(jwtUtils.generateToken(userId, userId, TokenType.REFRESH_TOKEN))
                 .build();
         em.persist(user);
 
         return ObjectMessage.<Response_User.User>builder()
                 .status(HttpStatus.OK)
                 .data(Response_User.User.builder()
-                        .id(user.getAccount_id())
-                        .accessToken(user.getAccess_token())
+                        .id(user.getId())
+                        .accessToken(user.getAccessToken())
                         .build()
                 )
                 .build();

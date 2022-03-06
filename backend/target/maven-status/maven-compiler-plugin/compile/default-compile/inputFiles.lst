@@ -5,10 +5,16 @@
 /Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/utilization/AESCrypt.java
 /Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/domain/entity/user/B_User.java
 /Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/domain/dto/response/Response_User.java
+/Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/domain/dto/response/Response_Token.java
+/Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/configuration/exception/CommonException.java
 /Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/configuration/Config_Webmvc.java
 /Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/configuration/provider/JWTAuthenticationEntryPoint.java
 /Users/kkong/Documents/rowan/jwt-login/backend/target/generated-sources/java/main/demo/domain/basement/QBaseEntity.java
+/Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/configuration/Config_Mapper.java
+/Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/mvc/service/impl/Service_Impl_Auth.java
 /Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/configuration/provider/JWTAuthenticationFilter.java
+/Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/mvc/service/Service_Auth.java
+/Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/configuration/exception/client/FaultParamException.java
 /Users/kkong/Documents/rowan/jwt-login/backend/target/generated-sources/java/main/demo/domain/basement/embed/QPassword.java
 /Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/mvc/repository/basement/BaseRepository.java
 /Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/mvc/controller/UserController.java
@@ -18,8 +24,10 @@
 /Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/utilization/JwtToken.java
 /Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/configuration/property/MyPasswordProperties.java
 /Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/domain/dto/response/basement/ObjectMessage.java
+/Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/mvc/controller/AuthController.java
 /Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/domain/dto/response/basement/BaseResponse.java
 /Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/domain/basement/convert/EncryptConvert.java
+/Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/mvc/controller/OtherController.java
 /Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/mvc/service/impl/Service_Impl_Login.java
 /Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/configuration/Config_Security.java
 /Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/configuration/filter/CustomAuthenticationFilter.java
@@ -27,7 +35,8 @@
 /Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/domain/basement/embed/Password.java
 /Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/domain/basement/type/ResponseType.java
 /Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/domain/basement/BaseEntity.java
-/Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/configuration/exception/FaultParamException.java
+/Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/utilization/MapperUtils.java
+/Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/mvc/controller/exception/ExceptionController.java
 /Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/domain/dto/Message.java
 /Users/kkong/Documents/rowan/jwt-login/backend/src/main/java/main/demo/configuration/filter/JWTAuthenticationFilter.java
 /Users/kkong/Documents/rowan/jwt-login/backend/target/generated-sources/java/main/demo/domain/entity/user/QB_User.java

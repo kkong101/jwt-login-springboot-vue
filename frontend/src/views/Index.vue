@@ -8,9 +8,9 @@
     <q-btn class="q-mt-md" color="primary" to="/admin">관리자 페이지</q-btn>
     <q-btn class="q-mt-md" color="primary" to="/mypage">마이 페이지</q-btn>
     <h6 class="q-my-lg" :style="isJwt ? 'color: red' : ''">
-      현재 로그인 상태 : {{ isJwt ? "로그인 상태 !!" : "Not Login" }}
+      현재 로그인 상태 : {{ token ? "로그인 상태 !!" : "Not Login" }}
     </h6>
-    <div v-if="isJwt">
+    <div v-if="token">
       <h6 class="q-my-lg">계정 아이디 - {{ userId }}</h6>
       <h6 class="q-my-lg">계정 이름 - {{ userName }}</h6>
       <h6 class="q-my-lg">Access 토큰 만기 시간</h6>
@@ -50,6 +50,8 @@
 
       const token = Cookies.get("AccessToken");
 
+      console.log(jwtParse(token));
+
       const expiredDate = new Date(jwtParse(token).exp * 1000);
 
       return { userId, userName, isJwt, token, logout, expiredDate };
@@ -57,6 +59,7 @@
     methods: {
       clickLogout() {
         window.alert("로그아웃 되었습니다.");
+        this.token = "";
         this.logout();
       },
     },

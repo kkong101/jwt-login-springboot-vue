@@ -1,14 +1,10 @@
 package main.demo.mvc.repository;
 
 import com.querydsl.jpa.impl.JPAUpdateClause;
-import main.demo.configuration.exception.FaultParamException;
-import main.demo.domain.basement.embed.Password;
-import main.demo.domain.dto.request.Param_User;
 import main.demo.domain.dto.response.Response_User;
 import main.demo.domain.entity.user.B_User;
 import main.demo.domain.entity.user.QB_User;
 import main.demo.mvc.repository.basement.BaseRepository;
-import main.demo.utilization.JwtToken;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -19,15 +15,17 @@ public class Repository_User extends BaseRepository {
     QB_User q_user = QB_User.b_User;
 
     public Optional<Response_User.User> getUser(String id) {
-        B_User queryResult = query.selectFrom(q_user).where(q_user.account_id.eq(id)).fetchOne();
+        B_User queryResult = query.selectFrom(q_user).where(q_user.id.eq(id)).fetchOne();
+
+        Response_User.User test = mapper.map(queryResult, Response_User.User.class);
 
         return (queryResult != null) ? Optional.of(mapper.map(queryResult, Response_User.User.class)) : Optional.empty();
     }
 
     public long updateRefreshToken(String id,String refreshToken) {
-        JPAUpdateClause update = query.update(q_user).where(q_user.account_id.eq(id));
+        JPAUpdateClause update = query.update(q_user).where(q_user.id.eq(id));
 
-        update.set(q_user.refresh_token,refreshToken);
+        update.set(q_user.refreshToken,refreshToken);
 
         return update.execute();
     }
