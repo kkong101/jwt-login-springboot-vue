@@ -67,12 +67,14 @@ public class Service_Impl_Auth extends BaseService<Repository_User> implements S
 
         } catch(ExpiredJwtException e) {
 
-            System.out.println("refresh 토근이 다시 생성되었습니다.");
+
             // refresh 토큰 만기 시 다시 발급
             String refreshToken = tokenUtils.generateToken(user.getId(),user.getId(), TokenType.REFRESH_TOKEN);
             long updated = repository.updateRefreshToken(param.getUser_id(),refreshToken);
 
-            System.out.println("long updated : " + updated);
+            if(updated == 1) {
+                System.out.println(param.getUser_id() + " 의 refresh token 이 정상적으로 발급 되었습니다.");
+            }
 
             String token = tokenUtils.generateToken(user.getId(),user.getId(), TokenType.ACCESS_TOKEN);
             return ObjectMessage.<Response_Token.Token>builder()

@@ -7,6 +7,7 @@ import main.demo.domain.entity.user.QB_User;
 import main.demo.mvc.repository.basement.BaseRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Repository
@@ -22,6 +23,7 @@ public class Repository_User extends BaseRepository {
         return (queryResult != null) ? Optional.of(mapper.map(queryResult, Response_User.User.class)) : Optional.empty();
     }
 
+    @Transactional
     public long updateRefreshToken(String id,String refreshToken) {
         JPAUpdateClause update = query.update(q_user).where(q_user.id.eq(id));
 

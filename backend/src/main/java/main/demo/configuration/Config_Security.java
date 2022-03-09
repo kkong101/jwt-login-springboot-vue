@@ -40,6 +40,8 @@ public class Config_Security extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/login/**").permitAll()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/other/mypage").authenticated()
+                .antMatchers("/other/admin").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

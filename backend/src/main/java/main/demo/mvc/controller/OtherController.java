@@ -10,8 +10,6 @@ public class OtherController {
     @RequestMapping(value = "/mypage", method = RequestMethod.GET)
     public String myPage() {
 
-        System.out.println("이거 왜 안돌아여?");
-
         return "서버에서 전송된 My Page 정보 입니다. token 인증이 되어야만 전송됩니다.";
     }
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
